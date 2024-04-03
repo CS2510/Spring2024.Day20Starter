@@ -14,9 +14,6 @@ class MainScene extends Scene {
     GameObject.instantiate(new ForegroundGameObject, 100, 100, 20, 20)
     GameObject.instantiate(new ControllerGameObject())
     GameObject.instantiate(new CloudGameObject(),50,100,20,20)
-
-
-    
   }
 
 }
