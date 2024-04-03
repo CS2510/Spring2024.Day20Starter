@@ -29,6 +29,56 @@ class Scene {
         this.backgroundColor = backgroundColor
         this.hasStarted = false;
     }
+
+    /**
+     * Call start on all the game objects and change our start flag
+     * 
+     * @param {CanvasRenderingContext2D} ctx The current rendering context
+     */
+    _start(ctx) {
+        if (!this.hasStarted) {
+            this.hasStarted = true;
+            if (this.start)
+                this.start(ctx);
+            for (const gameObject of this.gameObjects) {
+                if (gameObject.start) {
+                    gameObject.start(ctx);
+                }
+            }
+        }
+    }
+
+    /**
+     * Call update on all the game objects 
+     * 
+     * @param {CanvasRenderingContext2D} ctx The current rendering context
+     */
+    update(ctx) {
+        for (const gameObject of this.gameObjects) {
+            if (gameObject.update) {
+                gameObject.update(ctx);
+            }
+        }
+    }
+
+    /**
+     * Clear the current frame and call draw on all the game objects 
+     * 
+     * @param {CanvasRenderingContext2D} ctx The current rendering context
+     */
+    draw(ctx) {
+        // Clear the scene
+        ctx.fillStyle = this.backgroundColor;
+        ctx.fillRect(0, 0, ctx.canvas.width, ctx.canvas.height)
+
+        //Call draw on all the game objects
+        for (const gameObject of this.gameObjects) {
+            if (gameObject.draw) {
+                gameObject.draw(ctx)
+            }
+
+        }
+    }
 }
 
 window.Scene = Scene

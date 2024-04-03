@@ -49,15 +49,17 @@ class Engine {
         Engine.isSystemPaused = true;
       }
     }
-    let scene = Engine.currentScene;
 
-    Engine.draw(ctx);
+    //Draw in world space
+    Engine.currentScene.draw(ctx)
 
     if (!Engine.isSystemPaused) {
 
-      Engine.start(ctx)
+      //Call start on game objects that haven't been started
+      Engine.currentScene._start(ctx);
 
-      Engine.update(ctx)
+      // Update the current scene
+      Engine.currentScene.update(ctx)
 
 
       //Remove anything marked for destroy
@@ -67,52 +69,10 @@ class Engine {
     //Update the input
     Input.update();
 
-
+    
 
     //Draw in Screen/UI space
     //currentScene.drawUI(ctx)
-  }
-
-  static update(ctx) {
-    let scene = Engine.currentScene
-
-    for (const gameObject of scene.gameObjects) {
-      if (gameObject.update) {
-        gameObject.update(ctx);
-      }
-    }
-  }
-
-  static start(ctx) {
-    let scene = Engine.currentScene
-
-    //Call start on game objects that haven't been started
-    if (!scene.hasStarted) {
-      scene.hasStarted = true;
-      if (scene.start)
-        scene.start(ctx);
-      for (const gameObject of scene.gameObjects) {
-        if (gameObject.start) {
-          gameObject.start(ctx);
-        }
-      }
-    }
-  }
-
-  static draw(ctx) {
-    let scene = Engine.currentScene
-    //Draw in world space
-    ctx.fillStyle = scene.backgroundColor;
-    ctx.fillRect(0, 0, ctx.canvas.width, ctx.canvas.height)
-
-    //Call draw on all the game objects
-    for (const gameObject of scene.gameObjects) {
-      if (gameObject.draw) {
-        gameObject.draw(ctx)
-      }
-
-    }
-
   }
 
   /** Setup the game **/
